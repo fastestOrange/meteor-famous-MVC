@@ -29,7 +29,7 @@
 		PageView = function(){
 	      var args = [].slice.call(arguments, 1);
 	      View.apply(this, arguments);
-	      this.collection = this.options.collection;
+	      this.cursor = this.options.collection;
 	      this.isTouching = false;
 
 	      _addLayout.call(this);
@@ -38,7 +38,11 @@
 	      _addHeader.call(this);
 	      _addFooter.call(this);
 	      _addEventListeners.call(this);
+	      _observeCursor.call(this);
+
+	    	// console.log("HERREEEE", this.cursor);
 	    }
+
 
 	    PageView.DEFAULT_OPTIONS = {
 	      headerFooterZ: 0,
@@ -52,6 +56,33 @@
 	    PageView.prototype = Object.create(View.prototype);
 	    PageView.prototype.constructor = PageView;
 
+	    // PageView.prototype.updateCollection = function(newCollection){
+
+	    // }
+	  function _observeCursor(){
+	  	this.cursor.observe({
+		    addedAt: function(document, atIndex, before) {
+		    	console.log("Addedatbitches", document, atIndex, before);
+		      // data.splice(atIndex, 0, createFn(document));
+		    },
+		    changedAt: function(newDocument, oldDocument, atIndex) {
+		      // ensure the fragment createFn returns is re-active
+		        console.log("newDoctbitches", newDocument,  oldDocument, atIndex);
+
+		    },
+		    removedAt: function(oldDocument, atIndex) {
+		      // data.splice(atIndex, 1);
+		      console.log("removed", oldDocument, atIndex);
+		    },
+		    movedTo: function(document, fromIndex, toIndex, before) {
+		      // var item = data.splice(fromIndex, 1)[0];
+		      // data.splice(toIndex, 0, item);
+		       console.log("movedTotbitches", document, fromIndex, toIndex, before);
+
+
+    		}	
+    	});
+	  }
 	  
 	  function _addLayout(){
 	    this.layout = new HeaderFooterLayout({
@@ -300,31 +331,25 @@
 	    // this.collection = [{text: "something good", isCompleted: false}, 
 	    // 			       {text: "another thing coming", isCompleted: true}];
 
-	    //  = function(){
-	    // 	var tasks = Tasks.find().fetch();
-	    // 	return tasks;
-	    // }
 
 	    this.tasks = [];	
 	    this.taskMods = [];
+  
 
-	    for(var i = 0; i < Tasks.find().count(); i++){
-	      Meteor.forEach(Tasks.find({}), function(item){
-	      	  var model = item;
-	      	  return model
-	      });
+	      // for(var i = 0; i < this.collection.length; i++){
+	      // var model = this.collection[i];
+	      // var task = new TaskView({
+	      //   model: model,
+	      //   animIndex: i
+	      // });
 
-	      console.log(model);
-	      var task = new TaskView({
-	        model: model,
-	        animIndex: i
-	      });
-	      var node = new RenderNode();
-	      var taskMod = new StateModifier();
-	      this.taskMods.push(taskMod);
-	      node.add(taskMod).add(task);
-	      this.tasks.push(node);
-	      task._eventOutput.pipe(this._eventInput);
+
+	      // var node = new RenderNode();
+	      // var taskMod = new StateModifier();
+	      // this.taskMods.push(taskMod);
+	      // node.add(taskMod).add(task);
+	      // this.tasks.push(node);
+	      // task._eventOutput.pipe(this._eventInput);
 
 	      //approach we can take to rearrange tasks, move tasks, split tasks etc. TODO: figure out how to insert value into ViewSequenece
 	      // if(i === 0){
@@ -332,7 +357,7 @@
 	      //     taskMod.setTransform(Transform.translate(0,200,0), {duration: 1000, curve: 'linear'});
 	      //   }.bind(this, taskMod), 5000);
 	      // }
-	    }
+	    // }
 
 	    this.scrollView.sequenceFrom(this.tasks);
 
@@ -368,11 +393,9 @@
 	    //   this.collection.remove(model);
 	    // }.bind(this));
 	  }
+	
 
-Template.pageViewTemplate.rendered = function(){
 
-	console.log(Tasks.find({}));
-};
 
 
 

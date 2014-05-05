@@ -7,9 +7,13 @@
 </body>
 
 <template name="index">
-	{{> pageViewTemplate}}
+	{{> PageView}}
 </template>
 
-<template name="pageViewTemplate">
-	
+<template name="PageView">
+	{{> TaskView}}
+</template>
+
+<template name="TaskView">
+	{{task}}
 </template>

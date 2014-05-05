@@ -1,7 +1,15 @@
 {
   "meteor": {},
   "dependencies": {
-    "basePackages": {},
-    "packages": {}
+    "basePackages": {
+      "collection-helpers": {}
+    },
+    "packages": {
+      "collection-helpers": {
+        "git": "https://github.com/dburles/meteor-collection-helpers.git",
+        "tag": "v0.2.6",
+        "commit": "f04819e9a148fb8992c7a345503167dfb1b9ad3e"
+      }
+    }
   }
 }

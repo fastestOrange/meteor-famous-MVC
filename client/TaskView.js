@@ -67,9 +67,38 @@
   TaskView.prototype = Object.create(View.prototype);
   TaskView.prototype.constructor = TaskView;
 
-  TaskView.prototype.downIndex = function(){
-    this.index --;
+ TaskView.prototype.makeRed = function(){
+    this.background.setProperties({backgroundColor: commonVars.fRed, boxShadow: this.options.boxShadow});
+    this.text.setProperties({color: commonVars.fWhite});
+    this.backMod.setOpacity(1);
   };
+
+  TaskView.prototype.makeGreen = function(){
+    //make a new surface of green.
+    this.background.setProperties({backgroundColor: commonVars.fGreen, boxShadow: this.options.boxShadow});
+    this.text.setProperties({color: commonVars.fWhite});
+    this.backMod.setOpacity(1);
+  };
+
+  TaskView.prototype.makeBlack = function(){
+    this.background.setProperties({ boxShadow: 'none' });
+    this.backMod.setOpacity(0, {period: 100, curve: 'easeOut'});
+    this.text.setProperties({color: commonVars.fGrey});
+  };
+
+  TaskView.prototype.deleteTask = function(){
+    this.transitionable.set(-window.innerWidth*1.3, {method: 'spring', period: 400, dampingRatio: 0.8}, function(){
+      this.mod.setSize([,0.00001], {duration:250, curve:'easeIn'}, function(){
+        this.model.trigger('deleteTask', this.model);
+      }.bind(this));
+    }.bind(this));
+  }
+
+  TaskView.prototype.completeTask = function(){
+    this.transitionable.set(0, {method: 'spring', period: 100, dampingRatio: 0.9}, function(){
+      this.model.set('completed', !this.model.get('completed'));
+    }.bind(this));
+  }
 
   TaskView.DEFAULT_OPTIONS = {
     iconSize: [25,25],
@@ -278,3 +307,9 @@
     });
     this.node.add(completeTaskMod).add(completeTaskIcon);
   }
+
+
+
+
+
+

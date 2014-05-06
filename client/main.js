@@ -6,6 +6,7 @@ Meteor.startup(function(){
 });
 
 var once = _.once(function(taskList){
+    // Template.index.rendered = function(){
         var Engine = Famous('famous/core/Engine');
         
         var mainContext = Engine.createContext();
@@ -20,6 +21,9 @@ var once = _.once(function(taskList){
      
         mainContext.add(pageView);  
         
+    // };
+
+    // return Template.index.rendered;
 });
 
 

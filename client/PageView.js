@@ -30,17 +30,13 @@
 	      var args = [].slice.call(arguments, 1);
 	      View.apply(this, arguments);
 	      this.cursor = this.options.collection;
-	      this.isTouching = false;
-
+	      _observeCursor.call(this);
 	      _addLayout.call(this);
-	      _addBlankTask.call(this);
 	      _addContent.call(this);
 	      _addHeader.call(this);
 	      _addFooter.call(this);
+	      _addBlankTask.call(this);
 	      _addEventListeners.call(this);
-	      _observeCursor.call(this);
-
-	    	// console.log("HERREEEE", this.cursor);
 	    }
 
 
@@ -56,31 +52,31 @@
 	    PageView.prototype = Object.create(View.prototype);
 	    PageView.prototype.constructor = PageView;
 
-	    // PageView.prototype.updateCollection = function(newCollection){
-
-	    // }
 	  function _observeCursor(){
 	  	this.cursor.observe({
 		    addedAt: function(document, atIndex, before) {
-		    	console.log("Addedatbitches", document, atIndex, before);
-		      // data.splice(atIndex, 0, createFn(document));
-		    },
+		    	var task = new TaskView({
+		    	  model: document,
+		    	  animIndex: 0
+		    	});
+		    	var node = new RenderNode();
+		    	var taskMod = new StateModifier();
+		    	this.taskMods.splice(atIndex, 0, taskMod);
+		    	node.add(taskMod).add(task);
+		    	this.tasks.splice(atIndex, 0, node);
+		    	task._eventOutput.pipe(this.scrollView);
+		    }.bind(this),
 		    changedAt: function(newDocument, oldDocument, atIndex) {
 		      // ensure the fragment createFn returns is re-active
-		        console.log("newDoctbitches", newDocument,  oldDocument, atIndex);
-
-		    },
+		    }.bind(this),
 		    removedAt: function(oldDocument, atIndex) {
-		      // data.splice(atIndex, 1);
-		      console.log("removed", oldDocument, atIndex);
-		    },
+		    	this.taskMods.splice(atIndex, 1);
+		    	this.tasks.splice(atIndex, 1);
+		    }.bind(this),
 		    movedTo: function(document, fromIndex, toIndex, before) {
 		      // var item = data.splice(fromIndex, 1)[0];
 		      // data.splice(toIndex, 0, item);
-		       console.log("movedTotbitches", document, fromIndex, toIndex, before);
-
-
-    		}	
+    		}.bind(this)
     	});
 	  }
 	  
@@ -89,10 +85,12 @@
 	      headerSize: this.options.headerSize,
 	      footerSize: this.options.footerSize
 	    });
-
 	    this.add(this.layout)
-	   
 	  }
+
+	  //**********************
+	  // #### ADD HEADER ####
+
 	   function _addHeader(){
 	   	console.log('inside');
 	     this.layout.header.add(new StateModifier({
@@ -121,6 +119,9 @@
 	       transform: Transform.translate(0,0, this.options.headerFooterZ)
 	     })).add(this.hText);
 	   }
+
+	   //**********************
+	  // #### ADD FOOTER ####
 
 	   function _addFooter(){
 	    this.layout.footer.add(new StateModifier({
@@ -172,8 +173,10 @@
 	        this.textInput._currTarget.value = '';
 	      }
 	    }.bind(this));
-		Tasks.find().count();
 	  }
+
+	  //**********************
+	  // #### ADD BLANK TASK ####
 
 	  function _addBlankTask(){
 	      var blankTask = new View({
@@ -235,6 +238,9 @@
 	      this.add(blankTransform).add(blankModUp).add(blankTask);
 	      blankTask.add(blankRotation).add(blankSurface);
 	    }
+
+	    //**********************
+	  // #### ADD EVENT LISTENER ####
 
 	  function _addEventListeners(){
 	    // map everything through a smarter event Handler for constant access to start position.
@@ -321,6 +327,9 @@
 	    }.bind(this));
 	  }
 
+	  //**********************
+	  // #### ADD CONTENT ####
+
 	  function _addContent(){
 
 	    this.scrollView = new ScrollView({
@@ -328,36 +337,8 @@
 	    });
 	    this.transitionable = new Transitionable(0);
 
-	    // this.collection = [{text: "something good", isCompleted: false}, 
-	    // 			       {text: "another thing coming", isCompleted: true}];
-
-
 	    this.tasks = [];	
 	    this.taskMods = [];
-  
-
-	      // for(var i = 0; i < this.collection.length; i++){
-	      // var model = this.collection[i];
-	      // var task = new TaskView({
-	      //   model: model,
-	      //   animIndex: i
-	      // });
-
-
-	      // var node = new RenderNode();
-	      // var taskMod = new StateModifier();
-	      // this.taskMods.push(taskMod);
-	      // node.add(taskMod).add(task);
-	      // this.tasks.push(node);
-	      // task._eventOutput.pipe(this._eventInput);
-
-	      //approach we can take to rearrange tasks, move tasks, split tasks etc. TODO: figure out how to insert value into ViewSequenece
-	      // if(i === 0){
-	      //   setTimeout(function(taskMod){
-	      //     taskMod.setTransform(Transform.translate(0,200,0), {duration: 1000, curve: 'linear'});
-	      //   }.bind(this, taskMod), 5000);
-	      // }
-	    // }
 
 	    this.scrollView.sequenceFrom(this.tasks);
 
@@ -371,29 +352,8 @@
 	      this.isTouching = false;
 	    }.bind(this));
 
-	    // this.collection.on('add', function(model){
-	    //   var task = new TaskView({
-	    //     model: model,
-	    //     animIndex: 0
-	    //   });
-
-	    //   var node = new RenderNode();
-	    //   var taskMod = new StateModifier();
-	    //   this.taskMods.push(taskMod);
-	    //   node.add(taskMod).add(task);
-	    //   tasks.push(node);
-
-	    //   task._eventOutput.pipe(this.scrollView);
-	    //   //tasks.push(task);
-	    // }.bind(this));
-
-	    // this.collection.on('deleteTask', function(model){
-	    //   var index = this.collection.indexOf(model);
-	    //   tasks.splice(index, 1);
-	    //   this.collection.remove(model);
-	    // }.bind(this));
 	  }
-	
+
 
 
 

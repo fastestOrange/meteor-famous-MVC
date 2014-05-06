@@ -86,17 +86,17 @@
     this.text.setProperties({color: commonVars.fGrey});
   };
 
-  TaskView.prototype.deleteTask = function(){
+  TaskView.prototype.deleteTask = function(id){
     this.transitionable.set(-window.innerWidth*1.3, {method: 'spring', period: 400, dampingRatio: 0.8}, function(){
       this.mod.setSize([,0.00001], {duration:250, curve:'easeIn'}, function(){
-        this.model.trigger('deleteTask', this.model);
+        Tasks.remove({_id: this.model._id});
       }.bind(this));
     }.bind(this));
   }
 
   TaskView.prototype.completeTask = function(){
     this.transitionable.set(0, {method: 'spring', period: 100, dampingRatio: 0.9}, function(){
-      this.model.set('completed', !this.model.get('completed'));
+      Tasks.update(this.model._id, {$set: {isCompleted: false}});
     }.bind(this));
   }
 
@@ -136,12 +136,6 @@
         padding: '15px'
       }
     });
-    // if(this.model.get('text').length < window.innerWidth/8){
-    //     this.text.setContent(this.model.get('text'));
-    //   }else{
-    //     this.text.setProperties({paddingTop: '5px'});
-    //     this.text.setContent(this.model.get('text'));
-    // }
 
     var textModifier = new StateModifier({
       origin: [.5, .5],
@@ -158,22 +152,6 @@
     }.bind(this));
     
     this.text.pipe(touchFilter).pipe(this._eventOutput);
-    
-    // this.model.on('change', function(){
-    //   if(this.model.get('text').length < 40){
-    //     this.text.setContent(this.model.get('text'));
-    //   }else{
-    //     this.text.setProperties({paddingTop: '5px'});
-    //     this.text.setContent(this.model.get('text'));
-    //   }
-
-      // if(this.model.get('completed')){
-      //   this.makeBlack();
-      // } else {
-      //   this.makeRed();
-      // }
-    // }.bind(this));
-
   }
 
   function _addEventHandlers(){
@@ -267,7 +245,6 @@
   }
 
   function _addDeleteIcon(){
-
     var deleteTaskMod = new Modifier({origin: [1, 0.5], size: this.options.iconSize});
     deleteTaskMod.transformFrom(function(){
       var x = this.transitionable.get();
@@ -282,7 +259,7 @@
       return Math.min(1, (-x/(window.innerWidth/6)));
     }.bind(this));
     var deleteTaskIcon = new ImageSurface({
-        content: './Public/close-round.svg'
+        content: 'close-round.svg'
     });
     this.node.add(deleteTaskMod).add(deleteTaskIcon);
 
@@ -303,7 +280,7 @@
       return Math.min(1, (x/(window.innerWidth/6)));
     }.bind(this));
     var completeTaskIcon = new ImageSurface({
-        content: '/Public/check.png'
+        content: 'checkmark-round.svg'
     });
     this.node.add(completeTaskMod).add(completeTaskIcon);
   }

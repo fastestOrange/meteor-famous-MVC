@@ -31,6 +31,7 @@ body {
     -webkit-perspective: 0;
     perspective: none;
     overflow: hidden;
+    background: #404040;
 }
 
 .famous-container, .famous-group {

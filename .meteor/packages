@@ -7,3 +7,4 @@ standard-app-packages
 insecure
 underscore
 collection-helpers
+device-detection

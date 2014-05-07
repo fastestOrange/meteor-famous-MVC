@@ -61,6 +61,8 @@
        _addText.call(this);
        _addEventHandlers.call(this);
      }
+     // _handleCompleteButton.call(this);
+     
    }
 
 
@@ -96,9 +98,12 @@
 
   TaskView.prototype.completeTask = function(){
     this.transitionable.set(0, {method: 'spring', period: 100, dampingRatio: 0.9}, function(){
-      Tasks.update(this.model._id, {$set: {isCompleted: false}});
+      var theTask = Tasks.findOne({_id: this.model._id});
+      Tasks.update(this.model._id, {$set: {isCompleted: !theTask.isCompleted}});
+      this.makeBlack();
     }.bind(this));
   }
+
 
   TaskView.DEFAULT_OPTIONS = {
     iconSize: [25,25],
@@ -122,13 +127,20 @@
     var render = this.node.add(this.backMod);
     render.add(this.background);
     this.background.pipe(this._eventOutput);
+    if(this.model.isCompleted){
+      this.background.setProperties({ boxShadow: 'none' });
+      this.backMod.setOpacity(0, {period: 100, curve: 'easeOut'});
+    }
   }
 
   function _addText(){
-    this.text = new Surface({
-      content: this.model.text,
+    // this.text = new Surface({
+    this.text = new ReactiveSurface({
+      template: Template.taskView,
+      data: function() {return Tasks.findOne(this.model._id)}.bind(this),
+      // content: this.model.text,
       properties: {
-        color: 'white',
+        color: this.model.isCompleted ? commonVars.fGrey : 'white',
         fontSize: '16px',
         fontWeight: '500',
         fontFamily: commonVars.fonts,
@@ -285,6 +297,15 @@
     this.node.add(completeTaskMod).add(completeTaskIcon);
   }
 
+// function _handleCompleteButton(){
+  
+//   Template.button.events({
+//     'click': function(target){
+//         console.log(target);
+//         event.stopImmediatePropagation();
+//     }
+//   });
+// }
 
 
 

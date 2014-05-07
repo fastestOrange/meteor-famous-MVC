@@ -76,3 +76,26 @@ body {
     width: 100%;
     height: 100%;
 }
+
+.done{
+    position: absolute;
+    top: -2px;
+    right: 0;
+    bottom: -2px;
+    width: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    background-color: transparent;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.done:hover{
+    text-decoration: underline;
+    color: green;
+    font-size: .8em;
+}

@@ -2,13 +2,19 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "collection-helpers": {}
+      "collection-helpers": {},
+      "device-detection": {}
     },
     "packages": {
       "collection-helpers": {
         "git": "https://github.com/dburles/meteor-collection-helpers.git",
         "tag": "v0.2.6",
         "commit": "f04819e9a148fb8992c7a345503167dfb1b9ad3e"
+      },
+      "device-detection": {
+        "git": "https://github.com/mystor/meteor-device-detection.git",
+        "tag": "v0.1.6",
+        "commit": "a7909c2319a694b9caa959164485d7413dced435"
       }
     }
   }

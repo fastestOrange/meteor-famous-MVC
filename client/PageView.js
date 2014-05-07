@@ -37,6 +37,10 @@
 	      _addFooter.call(this);
 	      _addBlankTask.call(this);
 	      _addEventListeners.call(this);
+	      _handleCompleteButton.call(this);
+	      // _addPageEvents.call(this);
+	      // _addCollectionEvents.call(this);
+
 	    }
 
 
@@ -62,12 +66,19 @@
 		    	var node = new RenderNode();
 		    	var taskMod = new StateModifier();
 		    	this.taskMods.splice(atIndex, 0, taskMod);
+		    	this.taskViews.splice(atIndex, 0, task);
 		    	node.add(taskMod).add(task);
 		    	this.tasks.splice(atIndex, 0, node);
 		    	task._eventOutput.pipe(this.scrollView);
+
 		    }.bind(this),
 		    changedAt: function(newDocument, oldDocument, atIndex) {
-		      // ensure the fragment createFn returns is re-active
+		        if(newDocument.isCompleted){
+		        	this.taskViews[atIndex].makeBlack();
+		        } else {
+		        	this.taskViews[atIndex].makeRed();
+		        }
+		 
 		    }.bind(this),
 		    removedAt: function(oldDocument, atIndex) {
 		    	this.taskMods.splice(atIndex, 1);
@@ -92,7 +103,6 @@
 	  // #### ADD HEADER ####
 
 	   function _addHeader(){
-	   	console.log('inside');
 	     this.layout.header.add(new StateModifier({
 	       transform: Transform.translate(0,0, this.options.headerFooterZ)
 	     })).add(new Surface({
@@ -339,6 +349,7 @@
 
 	    this.tasks = [];	
 	    this.taskMods = [];
+	    this.taskViews = [];
 
 	    this.scrollView.sequenceFrom(this.tasks);
 
@@ -354,8 +365,13 @@
 
 	  }
 
-
-
+function _handleCompleteButton(){
+  Template.button.events({
+    'click': function(){
+        Tasks.update(this._id, {$set: {isCompleted: !this.isCompleted}});
+    }
+  });
+}
 
 
 

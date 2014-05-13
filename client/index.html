@@ -2,7 +2,7 @@
   <title>4meteorFamous</title>
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
 
 </head>
 
@@ -10,38 +10,28 @@
 </body>
 
 <template name="index">
-	{{> PageView}}
+	{{> TaskListView}}
 </template>
 
-<template name="PageView">
+<template name="TaskListViewView">
 	{{> taskView}}
 </template>
 
-<!-- <template name = "taskView">
-	<div class="task">
-		<span class="text">{{text}}</span>
-	</div>
-</template> -->
-
 <template name="taskView">
-{{#if isPhone}}
-  <div class="task">
-  	<span class="text">{{text}}</span>
-  </div>
-{{/if}}
-{{#if isTablet}}
-  <div class="task">
-  	<span class="text">{{text}}</span>
-  </div>
-{{/if}}
-{{#if isDesktop}}
+ {{#if isDesktop}}
 <div class="task">
-	<span class="text">{{text}}</span>{{> button}}
+  <span class="text">{{text}}</span>{{> button}}
 </div>
-
+{{else}}
+  <div class="task">
+  	<span class="text">{{text}}</span>
+  </div>
 {{/if}}
 </template>
 
 <template name="button">
+  <button href="#" class="edit">Edit</button>
+  <button href="#" class="delete">Delete</button>
 	<button href="#" class="done">Done</button>
 </template>
+

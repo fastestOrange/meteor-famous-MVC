@@ -14,7 +14,24 @@ This application illustrates how a Famo.us view layer and can be easily integrat
 
 ###Installation
 
+Required: git
+
 Install Meteor
 
-`
+`curl https://install.meteor.com | /bin/sh`
+
+Create new directory and clone this repository:
+
+`git clone https://github.com/FamousPrivateBeta/MVCMeteor.git`
+
+In new directory, start Meteor with
+
+`meteor`
+
+Open browser at `localhost:/3000`
+
+###Contributing
+All contributions are welcome! The simplest way to show your support for this project is to "star" it.
+
+
 

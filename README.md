@@ -1,7 +1,7 @@
 #Famous MVC Project Overview
 The Famo.us todo applications were written for Famous by software engineer consultants Shane Keller , Naman Goel, and Chris Oliver. The apps are based on the elegant and functional “Clear” iphone todo app which showcases the power of Famo.us animations, and provide a solid model for integrating Famo.us with Backbone, Angular, and Meteor, making it easier for thousands of developers to learn and love Famo.us. 
 
-The following README.md describes MVCBackbone.
+The following README.md describes MVCMeteor.
 
 ##Relevant Links
 MVCAngular: `https://github.com/FamousPrivateBeta/MVCAngular`

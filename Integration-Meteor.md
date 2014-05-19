@@ -41,7 +41,7 @@ In `index.html`:
 
 Playing nice with Famo.us means leaving all DOM manipulation or querying to Famo.us. ( To understand more about how the Famo.us render tree works:  http://famo.us/guides/dev/render-tree.html. ) The templates are used to take advantage of Meteor’s reactive data-binding from within the Famo.us surfaces using Zoltan Olah’s extension - `Reactive Surface`. 
 
-In place of static text or html as a value for the `content` property,`the data_driven  `data` and `template` are used instead.The template is defined in `index.html` and data is a function which return one from the collection Tasks.  Also, the context is bound to the individual TaskView view in the typical Famo.us pattern with `.bind(this)`. 
+In place of static text or html as a value for the `content` property,the data_driven  `data` and `template` are used instead.The template is defined in `index.html` and data is a function which return one from the collection Tasks.  Also, the context is bound to the individual TaskView view in the typical Famo.us pattern with `.bind(this)`. 
 
 In `TaskView`, 
 

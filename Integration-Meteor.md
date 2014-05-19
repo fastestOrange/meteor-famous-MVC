@@ -1,6 +1,3 @@
-#Lessons from using Famo.us-Meteor
-
-
 ##Overview
 The document give more attention to some of the key elements of the Famo.us integration with Meteor. This application’s view layer and eventing system is almost entirely in Famo.us. Meteor handles all collection operations.  
 
@@ -59,3 +56,20 @@ function _addText(){
   });
 ```
 
+###Events
+
+This application predominantly uses the Famo.us eventing system. The only use of the Meteor eventing system  comes from the three buttons which appear in the TaskView templates for non-mobile screens. The index of the TaskView clicked is first located within the Famo.us scrollview and then a call is made to the TaskView method `startEdit()`. 
+
+```
+ Template.button.events({
+    'click .edit': function(){
+    	that.taskNodes.getViewAt(this.index).startEdit();
+    }
+  });
+```
+
+The function `_observeCursor` in TaskListView wraps the methods provided by Meteor to react to changes in the cursor. 
+
+###Conclusion
+
+Meteor's modular structure means there are different ways of combining Meteor and Famo.us. This application relies on Famo.us for smooth UI interaction and animation and Meteor for data and reactive data-binding across different clients. Other integrations use the Meteor templating and event systems more extensively. 
